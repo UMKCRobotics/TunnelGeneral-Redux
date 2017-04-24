@@ -29,13 +29,13 @@ class ScrapMotor {
 
 class ScrapEncoder {
 	private:
-		volatile int encCount;
+		volatile long encCount;
 		int PINA_INTERRUPT;
 		int PINB_CHECKER;
 		void initEncoder();
 	public:
 		ScrapEncoder(int pinA, int pinB);
-		int getCount();
+		long getCount();
 		void resetCount();
 		void incrementCount();
 		void decrementCount();
@@ -49,7 +49,7 @@ class ScrapMotorControl {
 		unsigned long prevTime = 0;
 		float prevSpeed = 0.0;
 		float speedGoal = 0.0;
-		int prevCount = 0;
+		long prevCount = 0;
 		int minPower = 50;
 		float minSpeed;
 		float maxSpeed;
@@ -71,7 +71,7 @@ class ScrapMotorControl {
 		void setMinPower(int power) { minPower = power; };
 		void reset();
 		void stop();
-		int getCount() { return encoder->getCount(); };
+		long getCount() { return encoder->getCount(); };
 		float getSpeed(); // returns speed
 		float getSpeedGoal() { return speedGoal; }; // return speed goal
 		unsigned long getTime();
@@ -137,8 +137,8 @@ class ScrapController {
 
 class ScrapDualController {
 	private:
-		int goal1;
-		int goal2;
+		long goal1;
+		long goal2;
 		int diffTolerance = 40; //max diff in encoder values
 		int encTolerance = 5; // max window of error from set goal
 		int slowdownThresh1 = 500; // slow down range
@@ -160,13 +160,13 @@ class ScrapDualController {
 		ScrapDualController();
 		ScrapDualController(ScrapMotor& mot1, ScrapMotor& mot2, ScrapEncoder& enc1, ScrapEncoder& enc2);
 		ScrapDualController(ScrapMotor& mot1, ScrapMotor& mot2, ScrapEncoder& enc1, ScrapEncoder& enc2, ScrapSwitch& swi1, ScrapSwitch& swi2);
-		bool set(int g1,int g2); //returns state of 'done'
-		bool set(int goal_both); //returns state of 'done'
-		int getGoal1() { return goal1; };
-		int getGoal2() { return goal2; };
-		int getGoal() { return (goal1+goal2)/2; };
-		int getDiff1();
-		int getDiff2();
+		bool set(long g1,long g2); //returns state of 'done'
+		bool set(long goal_both); //returns state of 'done'
+		long getGoal1() { return goal1; };
+		long getGoal2() { return goal2; };
+		long getGoal() { return (goal1+goal2)/2; };
+		long getDiff1();
+		long getDiff2();
 		bool checkIfDone();
 		bool checkIfDone1();
 		bool checkIfDone2();
@@ -180,9 +180,9 @@ class ScrapDualController {
 		void moveSpeedToward2(int speedEncDiff);
 		void balanceSpeed();
 		void stop();
-		int getCount1() { return encoder1->getCount(); };
-		int getCount2() { return encoder2->getCount(); };
-		int getCount() { return (getCount1()+getCount2())/2; }; //returns average of encoder counts
+		long getCount1() { return encoder1->getCount(); };
+		long getCount2() { return encoder2->getCount(); };
+		long getCount() { return (getCount1()+getCount2())/2; }; //returns average of encoder counts
 		void attachMotor1(ScrapMotor& mot);
 		void attachMotor2(ScrapMotor& mot);
 		void attachEncoder1(ScrapEncoder& enc);

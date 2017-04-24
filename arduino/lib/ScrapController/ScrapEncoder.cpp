@@ -15,7 +15,7 @@ void ScrapEncoder::initEncoder() {
 }
 
 // call to get count
-int ScrapEncoder::getCount() {
+long ScrapEncoder::getCount() {
 	return encCount;
 }
 

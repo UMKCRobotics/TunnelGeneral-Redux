@@ -77,13 +77,13 @@ bool ScrapDualController::performReset() {
 	}
 }
 
-bool ScrapDualController::set(int g1, int g2) {
+bool ScrapDualController::set(long g1, long g2) {
 	goal1 = g1;
 	goal2 = g2;
 	return checkIfDone();
 }
 
-bool ScrapDualController::set(int goal_both) {
+bool ScrapDualController::set(long goal_both) {
 	return set(goal_both,goal_both);
 }
 
@@ -139,11 +139,11 @@ float ScrapDualController::calcSpeed2() {
 	return speedControl2.convertToSpeed(map(diff,1,slowdownThresh2,minEncSpeed,maxEncSpeed));
 }
 
-int ScrapDualController::getDiff1() {
+long ScrapDualController::getDiff1() {
 	return abs(encoder1->getCount() - goal1);
 }
 
-int ScrapDualController::getDiff2() {
+long ScrapDualController::getDiff2() {
 	return abs(encoder2->getCount() - goal2);
 }
 
