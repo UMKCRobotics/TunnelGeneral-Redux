@@ -15,9 +15,15 @@
 #define RIGHT_MOTOR_PIN2 42
 #define RIGHT_MOTOR_PWM 44
 
+// define IR pin(s)
+#define FRONT_IR A8
+
+// define encoder distances
 #define FORWARD 2500
 #define TURN 1275
 #define FAR 7000
+// define IR distances
+#define CLOSE_TO_WALL 200
 
 // create encoders
 ScrapEncoder leftEncoder(LEFT_ENCODER_INTERRUPT,LEFT_ENCODER_DIGITAL);
@@ -119,6 +125,10 @@ String interpretCommand() {
 		responseString = "1";
 		returnString += performForwardCommand();
 	}
+	else if (command == "fi") {
+		responseString = "1";
+		returnString += performForwardWithIRCommand();
+	}
 	else if (command == "l") {
 		responseString = "1";
 		returnString += performLeftTurnCommand();
@@ -130,6 +140,10 @@ String interpretCommand() {
 	else if (command == "b") {
 		responseString = "1";
 		returnString += performBackwardCommand();
+	}
+	else if (command == "I") {
+		responseString = "1";
+		returnString += String(analogRead(FRONT_IR));
 	}
 	/*else if (command == "f") {
 		if (values[0].length() != 4 || values[1].length() != 4)
@@ -158,6 +172,40 @@ String performForwardCommand() {
 	dualControl.shiftCount();
 	performSet(FORWARD,FORWARD);
 	return "1";
+}
+
+long getAverageIR() {
+	int max_count = 10;
+	long sum = 0;
+	for (int i = 0; i < max_count; i++) {
+		sum += analogRead(FRONT_IR);
+	}
+	return sum/max_count;
+}
+
+String performForwardWithIRCommand() {
+	String toReturn = "1";
+	dualControl.shiftCount();
+	dualControl.set(FORWARD,FORWARD);
+	bool gotTooClose = false;
+	// make sure the robot is within tolerance
+	while (true) {
+		// do movements to put robot within tolerence
+		while(!dualControl.performMovement()) {
+			if (!gotTooClose) {
+				if (getAverageIR() >= CLOSE_TO_WALL) {
+					gotTooClose = true;
+					dualControl.set(dualControl.getCount());
+					toReturn = "I";
+				}
+			}
+			else
+				delay(delayTime);
+		}
+		if (dualControl.checkIfNoSpeed())
+			break;
+	}
+	return toReturn;
 }
 
 String performBackwardCommand() {

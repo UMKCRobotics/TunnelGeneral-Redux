@@ -19,6 +19,9 @@ class RobotInterface(object):
 	def goForward(self):
 		return self.arduino.doCommand('f')
 	
+	def goForwardWithIR(self):
+		return self.arduino.doCommand('fi')
+	
 	def goBackward(self):
 		return self.arduino.doCommand('b')
 	
@@ -27,6 +30,9 @@ class RobotInterface(object):
 	
 	def goRight(self):
 		return self.arduino.doCommand('r')
+	
+	def checkFrontIR(self):
+		return self.arduino.doCommand('I')
 
 	def stop(self):
 		self.arduino.stop()
