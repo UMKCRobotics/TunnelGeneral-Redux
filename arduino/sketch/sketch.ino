@@ -16,7 +16,8 @@
 #define RIGHT_MOTOR_PWM 44
 
 #define FORWARD 2500
-#define TURN 1250
+#define TURN 1275
+#define FAR 7000
 
 // create encoders
 ScrapEncoder leftEncoder(LEFT_ENCODER_INTERRUPT,LEFT_ENCODER_DIGITAL);
@@ -42,7 +43,7 @@ void setup() {
 	initEncoders();
 	Serial.begin(115200);
 	Serial.write(1);
-	performSet(TURN,-TURN);
+	performSet(0,0);
 	/*leftMotor.setMotor(255);
 	rightMotor.setMotor(255);
 	delay(1000);
@@ -51,7 +52,7 @@ void setup() {
 }
 
 void loop () {
-	// perform movement - moves arm to some goal coordinate
+	// perform movement - keeps motors at a set encoder goal
 	performActions();
 
 	// if something in serial, parse it
@@ -113,8 +114,24 @@ String interpretCommand() {
 		returnString += String(leftEncoder.getCount());
 		returnString += '|';
 		returnString += String(rightEncoder.getCount());
-	}/*
-	else if (command == "sp") {
+	}
+	else if (command == "f") {
+		responseString = "1";
+		returnString += performForwardCommand();
+	}
+	else if (command == "l") {
+		responseString = "1";
+		returnString += performLeftTurnCommand();
+	}
+	else if (command == "r") {
+		responseString = "1";
+		returnString += performRightTurnCommand();
+	}
+	else if (command == "b") {
+		responseString = "1";
+		returnString += performBackwardCommand();
+	}
+	/*else if (command == "f") {
 		if (values[0].length() != 4 || values[1].length() != 4)
 			return responseString;
 		responseString = "1";
@@ -137,10 +154,42 @@ String interpretCommand() {
 	return responseString;
 }
 
+String performForwardCommand() {
+	dualControl.shiftCount();
+	performSet(FORWARD,FORWARD);
+	return "1";
+}
+
+String performBackwardCommand() {
+	dualControl.shiftCount();
+	performSet(-FORWARD,-FORWARD);
+	return "1";
+}
+
+String performLeftTurnCommand() {
+	dualControl.shiftCount();
+	performSet(-TURN,TURN);
+	return "1";
+}
+
+String performRightTurnCommand() {
+	dualControl.shiftCount();
+	performSet(TURN,-TURN);
+	return "1";
+}
+
+
 bool performSet(int left, int right) {
 	dualControl.set(left,right);
-	while(!dualControl.performMovement())
-		delay(delayTime);
+	// make sure the robot is within tolerance
+	while (true) {
+		// do movements to put robot within tolerence
+		while(!dualControl.performMovement()) {
+			delay(delayTime);
+		}
+		if (dualControl.checkIfNoSpeed())
+			break;
+	}
 	return true;
 }
 
@@ -148,17 +197,6 @@ bool performSet(int left, int right) {
 bool performActions() {
 	return dualControl.performMovement();
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 // initialize encoders

@@ -24,6 +24,10 @@ void ScrapEncoder::resetCount() {
 	encCount = 0;
 }
 
+void ScrapEncoder::setCount(long newCount) {
+	encCount = newCount;
+}
+
 
 // for some reason one encoder does not like this
 // therefore, rest in peace. currently deprecated

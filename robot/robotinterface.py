@@ -17,7 +17,16 @@ class RobotInterface(object):
 		self.arduino = ArduinoInterface(conf["ard_port"],int(conf["ard_baud"]),int(conf["MAX_TRIES"]))
 
 	def goForward(self):
-		return self.arduino.doCommand('c')
+		return self.arduino.doCommand('f')
+	
+	def goBackward(self):
+		return self.arduino.doCommand('b')
+	
+	def goLeft(self):
+		return self.arduino.doCommand('l')
+	
+	def goRight(self):
+		return self.arduino.doCommand('r')
 
 	def stop(self):
 		self.arduino.stop()

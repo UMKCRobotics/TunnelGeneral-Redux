@@ -37,6 +37,7 @@ class ScrapEncoder {
 		ScrapEncoder(int pinA, int pinB);
 		long getCount();
 		void resetCount();
+		void setCount(long newCount);
 		void incrementCount();
 		void decrementCount();
 		void checkEncoder();
@@ -162,6 +163,7 @@ class ScrapDualController {
 		ScrapDualController(ScrapMotor& mot1, ScrapMotor& mot2, ScrapEncoder& enc1, ScrapEncoder& enc2, ScrapSwitch& swi1, ScrapSwitch& swi2);
 		bool set(long g1,long g2); //returns state of 'done'
 		bool set(long goal_both); //returns state of 'done'
+		void shiftCount(); //sets encoders to relative value from current goal
 		long getGoal1() { return goal1; };
 		long getGoal2() { return goal2; };
 		long getGoal() { return (goal1+goal2)/2; };
@@ -170,6 +172,7 @@ class ScrapDualController {
 		bool checkIfDone();
 		bool checkIfDone1();
 		bool checkIfDone2();
+		bool checkIfNoSpeed(); 
 		float calcSpeed1();
 		float calcSpeed2(); 
 		bool performMovement();

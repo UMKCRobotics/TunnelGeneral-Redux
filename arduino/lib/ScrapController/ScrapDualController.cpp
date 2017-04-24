@@ -87,6 +87,12 @@ bool ScrapDualController::set(long goal_both) {
 	return set(goal_both,goal_both);
 }
 
+void ScrapDualController::shiftCount() {
+	encoder1->setCount(encoder1->getCount() - goal1);
+	encoder2->setCount(encoder2->getCount() - goal2);
+	set(0,0);
+}
+
 bool ScrapDualController::performMovement() {
 	//check if already done moving
 	if (checkIfDone()) { 
@@ -126,6 +132,9 @@ bool ScrapDualController::performMovement() {
 
 }
 
+bool ScrapDualController::checkIfNoSpeed() {
+	return (speedControl1.getSpeed() == 0 && speedControl2.getSpeed() == 0);
+}
 
 // calculate speed to give motor
 float ScrapDualController::calcSpeed1() {
