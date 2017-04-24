@@ -139,14 +139,14 @@ class ScrapDualController {
 	private:
 		int goal1;
 		int goal2;
-		int diffTolerance = 50; //max diff in encoder values
+		int diffTolerance = 40; //max diff in encoder values
 		int encTolerance = 5; // max window of error from set goal
-		int slowdownThresh1 = 200; // slow down range
-		int slowdownThresh2 = 200; // slow down range
-		int minSlowPower1 = 197; // minimum power of motor1
-		int minSlowPower2 = 180; // minimum power of motor2
-		int minEncSpeed = 200;
-		int maxEncSpeed = 1000;
+		int slowdownThresh1 = 500; // slow down range
+		int slowdownThresh2 = 500; // slow down range
+		int minSlowPower1 = 90; // minimum power of motor1
+		int minSlowPower2 = 90; // minimum power of motor2
+		int minEncSpeed = 250;
+		int maxEncSpeed = 1400;
 		int encSpeedBalance = 10;
 		ScrapMotor* motor1;
 		ScrapMotor* motor2;

@@ -2,24 +2,21 @@
 
 
 // define all encoder pins
-#define LEFT_ENCODER_INTERRUPT 2
+#define LEFT_ENCODER_INTERRUPT 3
 #define LEFT_ENCODER_DIGITAL 4
-#define RIGHT_ENCODER_INTERRUPT 3
+#define RIGHT_ENCODER_INTERRUPT 2
 #define RIGHT_ENCODER_DIGITAL 5
 
 // define all motor pins
-#define LEFT_MOTOR_PIN1 40
-#define LEFT_MOTOR_PIN2 42
-#define LEFT_MOTOR_PWM 44
-#define RIGHT_MOTOR_PIN1 41
-#define RIGHT_MOTOR_PIN2 43
-#define RIGHT_MOTOR_PWM 45
+#define LEFT_MOTOR_PIN1 41
+#define LEFT_MOTOR_PIN2 43
+#define LEFT_MOTOR_PWM 45
+#define RIGHT_MOTOR_PIN1 40
+#define RIGHT_MOTOR_PIN2 42
+#define RIGHT_MOTOR_PWM 44
 
-// keep track of last interrupt state
-volatile byte leftEncoderPrevious;
-volatile byte leftEncoderDirection;
-volatile boolean rightEncoderPrevious;
-volatile boolean rightEncoderDirection;
+#define FORWARD 2500
+#define TURN 1250
 
 // create encoders
 ScrapEncoder leftEncoder(LEFT_ENCODER_INTERRUPT,LEFT_ENCODER_DIGITAL);
@@ -27,6 +24,9 @@ ScrapEncoder rightEncoder(RIGHT_ENCODER_INTERRUPT,RIGHT_ENCODER_DIGITAL);
 // create motors
 ScrapMotor leftMotor(LEFT_MOTOR_PIN1,LEFT_MOTOR_PIN2,LEFT_MOTOR_PWM);
 ScrapMotor rightMotor(RIGHT_MOTOR_PIN1,RIGHT_MOTOR_PIN2,RIGHT_MOTOR_PWM);
+// create dual controller
+ScrapDualController dualControl(leftMotor,rightMotor,leftEncoder,rightEncoder);
+
 
 // delay time
 const int delayTime = 2;
@@ -42,11 +42,12 @@ void setup() {
 	initEncoders();
 	Serial.begin(115200);
 	Serial.write(1);
-	leftMotor.setMotor(100);
-	rightMotor.setMotor(100);
-	delay(3000);
+	performSet(TURN,-TURN);
+	/*leftMotor.setMotor(255);
+	rightMotor.setMotor(255);
+	delay(1000);
 	leftMotor.stop();
-	rightMotor.stop();
+	rightMotor.stop();*/
 }
 
 void loop () {
@@ -136,9 +137,16 @@ String interpretCommand() {
 	return responseString;
 }
 
+bool performSet(int left, int right) {
+	dualControl.set(left,right);
+	while(!dualControl.performMovement())
+		delay(delayTime);
+	return true;
+}
+
 
 bool performActions() {
-	return true;
+	return dualControl.performMovement();
 }
 
 
@@ -160,33 +168,15 @@ void initEncoders() {
 }
 
 void leftEncoderFunc() {
-	int inter_state = digitalRead(LEFT_ENCODER_INTERRUPT);
-	if ((leftEncoderPrevious == LOW) && (inter_state == HIGH)) {
-		int digital_state = digitalRead(LEFT_ENCODER_DIGITAL);
-		if (digital_state == LOW && leftEncoderDirection) {
-			leftEncoderDirection = false;
-		}
-		else if (digital_state == HIGH && !leftEncoderDirection) {
-			leftEncoderDirection = true;
-		}
-	}
-	leftEncoderPrevious = inter_state;
-	if (!leftEncoderDirection) leftEncoder.incrementCount();
-	else leftEncoder.decrementCount();
+	if (digitalRead(LEFT_ENCODER_INTERRUPT) == digitalRead(LEFT_ENCODER_DIGITAL))
+		leftEncoder.decrementCount();
+	else
+		leftEncoder.incrementCount();
 }
 
 void rightEncoderFunc() {
-	int inter_state = digitalRead(RIGHT_ENCODER_INTERRUPT);
-	if ((rightEncoderPrevious == LOW) && (inter_state == HIGH)) {
-		int digital_state = digitalRead(RIGHT_ENCODER_DIGITAL);
-		if (digital_state == LOW && rightEncoderDirection) {
-			rightEncoderDirection = false;
-		}
-		else if (digital_state == HIGH && !rightEncoderDirection) {
-			rightEncoderDirection = true;
-		}
-	}
-	rightEncoderPrevious = inter_state;
-	if (!rightEncoderDirection) rightEncoder.incrementCount();
-	else rightEncoder.decrementCount();
+	if (digitalRead(RIGHT_ENCODER_INTERRUPT) == digitalRead(RIGHT_ENCODER_DIGITAL))
+		rightEncoder.decrementCount();
+	else
+		rightEncoder.incrementCount();
 }
