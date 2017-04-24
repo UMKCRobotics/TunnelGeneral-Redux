@@ -105,12 +105,14 @@ String interpretCommand() {
 	// determine what to do:
 	
 	// check if movement command - make sure length is okay
-	/*if (command == "s") {
-		if (values[0].length() != 4 || values[1].length() != 4)
-			return responseString;
+	if (command == "c") {
+		//if (values[0].length() != 4 || values[1].length() != 4)
+		//	return responseString;
 		responseString = "1";
-		returnString = performSet(values[0].toInt(),values[1].toInt());
-	}
+		returnString += String(leftEncoder.getCount());
+		returnString += '|';
+		returnString += String(rightEncoder.getCount());
+	}/*
 	else if (command == "sp") {
 		if (values[0].length() != 4 || values[1].length() != 4)
 			return responseString;
