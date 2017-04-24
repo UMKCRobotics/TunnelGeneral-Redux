@@ -1,0 +1,1 @@
+SUBSYSTEM=="tty", ATTRS{serial}=="952383432343512160B1", SYMLINK+="arduino_allfunc"

@@ -1,0 +1,6 @@
+EXEC_DIR==NULL
+EXEC_LIBS==DEFAULT
+BOARD==mega
+BAUDRATE==115200
+PORT==/dev/arduino_allfunc
+SKETCH_DIR==arduino
