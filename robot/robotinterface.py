@@ -40,10 +40,10 @@ class RobotInterface(object):
 	def goBackward(self):
 		return self.arduino.doCommand('b')
 	
-	def goLeft(self):
+	def rotateCounterClockwise(self):
 		return self.arduino.doCommand('l')
 	
-	def goRight(self):
+	def rotateClockwise(self):
 		return self.arduino.doCommand('r')
 
 	def goCalibrateIR(self, side):
@@ -54,7 +54,7 @@ class RobotInterface(object):
 		return self.arduino.doCommand('I')
 
 	def getEMFreading(self):
-		return self.arduino.doCommand('S',['E'])
+		return self.arduino.doCommand('S',['E'],returnType=[])
 
 	def getObstacleReport(self):
 		return self.arduino.doCommand('S',['O'])

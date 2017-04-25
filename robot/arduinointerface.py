@@ -19,10 +19,10 @@ class ArduinoInterface(object):
 		self.ard_comm.start()
 
 	### sends commands with a possible list of values
-	def doCommand(self,command,valList=None):
+	def doCommand(self,command,valList=None,returnType=""):
 		requestCommand = command
 		if valList == None or len(valList) == 0:
-			return self.ard_comm.request(requestCommand)
+			return self.ard_comm.request(requestCommand,returnAs=returnType)
 		else:
 			requestCommand += '|'
 			for val in valList:
@@ -30,7 +30,7 @@ class ArduinoInterface(object):
 				requestCommand += '|'
 			# remove last separator
 			requestCommand = requestCommand[:-1]
-			return self.ard_comm.request(requestCommand)
+			return self.ard_comm.request(requestCommand,returnAs=returnType)
 	
 	def stop(self):
 		self.ard_comm.stopThread()

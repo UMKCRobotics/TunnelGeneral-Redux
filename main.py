@@ -25,9 +25,9 @@ while True:
 	elif user_inp == 'b':
 		print wait_till_done(robot.goBackward())
 	elif user_inp == 'l':
-		print wait_till_done(robot.goLeft())
+		print wait_till_done(robot.rotateCounterClockwise())
 	elif user_inp == 'r':
-		print wait_till_done(robot.goRight())
+		print wait_till_done(robot.rotateClockwise())
 	elif user_inp == 'i':
 		print wait_till_done(robot.checkFrontIR())
 	time.sleep(0.1)
