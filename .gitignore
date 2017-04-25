@@ -1,1 +1,14 @@
 *.pyc
+.idea
+.build
+build
+simulation/genmap.txt
+simulation/gridstates.txt
+
+*.layout
+*.cbp
+*.depend
+bin
+obj
+
+cmake-build*

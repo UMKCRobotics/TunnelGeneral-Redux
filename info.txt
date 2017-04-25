@@ -1,0 +1,60 @@
+UDEV rule commands (to find serial #):
+	1. After plugging in the device, perform:
+	>	dmesg
+	2. When the right name is found, perform:
+	>	udevadm info --name=/dev/ttyACM0 --attribute-walk
+	where the /ttyACM0 is the right name
+	3. Look for some serial parameter under USB, or TTY. It may look like this: A501VRMT
+	4. Put that into the serial in the .rules file
+	5. Run make_udev_rules
+
+Launching main.py automatically on Pi startup:
+    1. Profit
+    2. Change working dir to root of git proj
+    3. Make main_launcher.py executable by performing:
+    >	chmod 755 main_launcher.sh
+    4. Open up a crontab by performing:
+    >	sudo crontab -e
+    5. Add a new line to start script at boot:
+    >	@reboot sh /home/pi/2016-2017-TunnelGeneral/main_launcher.sh
+    6. Ctrl-X to exit, save when prompted
+    7. Done! Script will now launch after every Pi bootup
+
+Launching manually through SSH:
+    On the computer connected to the same network (the one just west of our game board):
+        ssh pi@192.168.2.3
+        password: raspberry
+        cd ~/2016-2017-TunnelGeneral/
+        ./main_launcher.sh
+
+Fixing git repo after .gitignore is updated:
+	1. Make sure the current working dir is the root of the proj
+	2. Run the following commands:
+	>	git rm --cached -r .
+	>	git add .
+	3. Commit with a pretty message and push
+
+Setting up Rasp Pi:
+	1. Install python-dev using:
+	>	sudo apt-get install python-dev
+	2. Install/upgrade numpy:
+	>	sudo apt-get install python-numpy
+	3. Install scipy:
+	>	sudo apt-get install python-scipy
+	4. Install sklearn:
+	>	sudo apt-get install python-sklearn
+	5. Install matplotlib/pylab:
+	>	sudo apt-get install python-matplotlib
+	6. Install pyaudio:
+	>	sudo apt-get install python-pyaudio
+	7. Install sortedcontainers:
+	>	sudo pip install sortedcontainers
+    
+AI_17 options:
+    (maybe incomplete)
+    ASSUME_PATH_CANT_GO_ADJACENT_TO_ITSELF in hampath.py
+    COORDINATE_CHANGE in Grid_Util.py has standard order of direction checking
+        (this order not used for DFS in explore3)
+    PRIORITY_FOR_AVOIDING_TURNS in AI_17.py
+    MOVE_COUNT_ALLOWED_AWAY_FROM_SIDES in AI_17.py
+    BAD_CALIBRATION_COORDINATES in AI_17.py

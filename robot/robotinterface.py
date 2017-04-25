@@ -16,6 +16,21 @@ class RobotInterface(object):
 		self.conf = conf
 		self.arduino = ArduinoInterface(conf["ard_port"],int(conf["ard_baud"]),int(conf["MAX_TRIES"]))
 
+	# button-related commands
+	def getGoButton(self):
+		return self.arduino.doCommand('B',['G'])
+
+	def getGoButton(self):
+		return self.arduino.doCommand('B',['S'])
+
+	# display-related commands
+	def set8x8(self, index, gridType):
+		return self.arduino.doCommand(gridType,[str(index)])
+
+	def set7segment(self, number):
+		return self.arduino.doCommand('N',[str(number)])
+
+	# movement-related commands
 	def goForward(self):
 		return self.arduino.doCommand('f')
 	
@@ -30,9 +45,20 @@ class RobotInterface(object):
 	
 	def goRight(self):
 		return self.arduino.doCommand('r')
+
+	def goCalibrateIR(self, side):
+		return self.arduino.doCommand('c',[side])
 	
+	# sensor-related commands
 	def checkFrontIR(self):
 		return self.arduino.doCommand('I')
+
+	def getEMFreading(self):
+		return self.arduino.doCommand('S',['E'])
+
+	def getObstacleReport(self):
+		return self.arduino.doCommand('S',['O'])
+
 
 	def stop(self):
 		self.arduino.stop()
