@@ -30,6 +30,8 @@ while True:
 		print wait_till_done(robot.rotateClockwise())
 	elif user_inp == 'i':
 		print wait_till_done(robot.checkFrontIR())
+	elif user_inp == 'e':
+		print wait_till_done(robot.getEMFreading())
 	time.sleep(0.1)
 
 robot.stop()

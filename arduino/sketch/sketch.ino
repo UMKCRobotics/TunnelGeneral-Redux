@@ -79,6 +79,12 @@ String interpretCommand() {
 		responseString = "1";
 		returnString += robot.getEncoderValues();
 	}
+	else if (command == "S") {
+		if (values[0] == "E") {
+			responseString = "1";
+			returnString += String(robot.getReadingEMF());
+		}
+	}
 	else if (command == "f") {
 		responseString = "1";
 		returnString += robot.performForwardCommand();

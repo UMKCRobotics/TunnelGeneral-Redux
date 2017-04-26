@@ -26,6 +26,9 @@ DEFINITIONS BEGIN
 // define IR pin(s)
 #define FRONT_IR A8
 
+// define EMF pin
+#define EMF_PIN A0
+
 // define encoder distances
 #define FORWARD 2500
 #define TURN 1275

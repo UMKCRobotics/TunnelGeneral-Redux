@@ -27,6 +27,8 @@ class TunnelRobot {
 		String performRightTurnCommand();
 		// IR functions
 		long getAverageIR(int IRpin);
+		// EMF functions
+		long getReadingEMF();
 		// encoder functions
 		String getEncoderValues();
 		void leftEncoderFunc();
