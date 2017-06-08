@@ -1,6 +1,5 @@
 import time
 from robot.util import read_config, wait_till_done, RobotException, UserInput
-from comm.serialcomm import SerialComm
 from robot.robotinterface import RobotInterface
 
 conf_dict = read_config("conf.txt")

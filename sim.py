@@ -9,13 +9,13 @@ __location__ = os.path.realpath(
 sim_dir = os.path.join(__location__, 'simulation/')
 sys.path.insert(0, sim_dir)
 
-from Stage_Competition import Stage_Competition
-from Stage_GridChoose import Stage_GridChoose
-from Stage_AlgorithmChoose import Stage_AlgorithmChoose
-from Stage_Build import Stage_Build
-from Sensors import Sensor_Converter
-import AI_17
-import AI_JED
+from simulation.Stage_Competition import Stage_Competition
+from simulation.Stage_GridChoose import Stage_GridChoose
+from simulation.Stage_AlgorithmChoose import Stage_AlgorithmChoose
+from simulation.Stage_Build import Stage_Build
+from simulation.Sensors import Sensor_Converter
+import simulation.AI_17 as AI_17
+import simulation.AI_JED as AI_JED
 
 robotNameToLoad = None
 

@@ -1,4 +1,5 @@
 import os, sys, time
+from arduinointerface import ArduinoInterface
 
 # add relevant dir to path
 __location__ = os.path.realpath(
@@ -6,29 +7,27 @@ __location__ = os.path.realpath(
 main_dir = os.path.realpath(os.path.join(__location__,'../..'))
 sys.path.insert(0, main_dir)
 
-from arduinointerface import ArduinoInterface
-
 
 class RobotInterface(object):
 
 
 	def __init__(self, conf):
 		self.conf = conf
-		self.arduino = ArduinoInterface(conf["ard_port"],int(conf["ard_baud"]),int(conf["MAX_TRIES"]))
+		self.arduino = ArduinoInterface(conf["ard_port"], int(conf["ard_baud"]), int(conf["MAX_TRIES"]))
 
 	# button-related commands
 	def getGoButton(self):
 		return self.arduino.doCommand('B',['G'])
 
-	def getGoButton(self):
+	def getStopButton(self):
 		return self.arduino.doCommand('B',['S'])
 
 	# display-related commands
 	def set8x8(self, index, gridType):
-		return self.arduino.doCommand(gridType,[str(index)])
+		return self.arduino.doCommand(gridType, [str(index)])
 
 	def set7segment(self, number):
-		return self.arduino.doCommand('N',[str(number)])
+		return self.arduino.doCommand('N', [str(number)])
 
 	# movement-related commands
 	def goForward(self):
@@ -47,18 +46,18 @@ class RobotInterface(object):
 		return self.arduino.doCommand('r')
 
 	def goCalibrateIR(self, side):
-		return self.arduino.doCommand('c',[side])
+		return self.arduino.doCommand('c', [side])
 	
 	# sensor-related commands
 	def checkFrontIR(self):
 		return self.arduino.doCommand('I')
 
 	def getEMFreading(self):
-		return self.arduino.doCommand('S',['E'],returnType=[])
+		return self.arduino.doCommand('S', ['E'], returnType=[])
 
 	def getObstacleReport(self):
-		return self.arduino.doCommand('S',['O'])
+		return self.arduino.doCommand('S', ['O'])
 
-
+	# not related to robot movement, but config stuff
 	def stop(self):
 		self.arduino.stop()
