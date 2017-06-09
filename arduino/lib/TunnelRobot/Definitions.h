@@ -25,6 +25,16 @@ DEFINITIONS BEGIN
 
 // define IR pin(s)
 #define FRONT_IR A8
+#define LEFT_IR_L A13
+#define LEFT_IR_R A14
+#define RIGHT_IR_L A10
+#define RIGHT_IR_R A9
+#define BACK_IR_L A12
+#define BACK_IR_R A11
+
+// defube button pins
+#define GO_BUTTON_PIN 19
+#define STOP_BUTTON_PIN 18
 
 // define EMF pin
 #define EMF_PIN A0
@@ -33,8 +43,15 @@ DEFINITIONS BEGIN
 #define FORWARD 2500
 #define TURN 1275
 #define FAR 7000
+
 // define IR distances
 #define CLOSE_TO_WALL 200
+#define OBSTACLE_NEARBY 200 // TODO
+
+// define calibration IR differences
+#define LEFT_CALIBRATION_DIFF 0 // TODO
+#define RIGHT_CALIBRATION_DIFF 0 // TODO
+#define BACK_CALIBRATION_DIFF 0 // TODO
 
 /*
 DEFINITIONS END

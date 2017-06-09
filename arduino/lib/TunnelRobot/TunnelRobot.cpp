@@ -30,15 +30,6 @@ String TunnelRobot::performForwardCommand() {
 	return "1";
 }
 
-long TunnelRobot::getAverageIR(int IRpin) {
-	int max_count = 10;
-	long sum = 0;
-	for (int i = 0; i < max_count; i++) {
-		sum += analogRead(IRpin);
-	}
-	return sum/max_count;
-}
-
 String TunnelRobot::performForwardWithIRCommand() {
 	String toReturn = "1";
 	dualControl.shiftCount();
@@ -49,7 +40,7 @@ String TunnelRobot::performForwardWithIRCommand() {
 		// do movements to put robot within tolerence
 		while(!dualControl.performMovement()) {
 			if (!gotTooClose) {
-				if (getAverageIR(FRONT_IR) >= CLOSE_TO_WALL) {
+				if (sensors.getAverageIR(FRONT_IR) >= CLOSE_TO_WALL) {
 					gotTooClose = true;
 					dualControl.set(dualControl.getCount());
 					toReturn = "I";
@@ -82,25 +73,17 @@ String TunnelRobot::performRightTurnCommand() {
 	return "1";
 }
 
-//get EMF reading
-long TunnelRobot::getReadingEMF() {
-	int count = 0; // non-zero samples taken
-	long sum = 0; // sum of squares of samples
-	long average = 0;
-	int reading; // used to store a sample
-	for (int i = 0; i < 500; i++) {
-		reading = analogRead(EMF_PIN);
-		// only care about non-zero readings
-		if (reading != 0) {
-			count++;
-			// add the square of read value
-			sum += pow(reading,2);
-		}
-	}
-	// get average of readings, if count is not zero
-	if (count > 0)
-		average = sum/count;
-	return average;
+// calibrate on sides TODO
+String TunnelRobot::calibrateOnLeft() {
+	return "1";
+}
+
+String TunnelRobot::calibrateOnRight() {
+	return "1";
+}
+
+String TunnelRobot::calibrateOnBack() {
+	return "1";
 }
 
 
@@ -126,4 +109,15 @@ void TunnelRobot::rightEncoderFunc() {
 		rightEncoder.decrementCount();
 	else
 		rightEncoder.incrementCount();
+}
+
+// button functions; should be triggered by interrupts
+void TunnelRobot::goButtonFunc() {
+	if (digitalRead(GO_BUTTON_PIN) == HIGH)
+		buttons.pressGoButton();
+}
+
+void TunnelRobot::stopButtonFunc() {
+	if (digitalRead(STOP_BUTTON_PIN) == HIGH)
+		buttons.pressStopButton();
 }

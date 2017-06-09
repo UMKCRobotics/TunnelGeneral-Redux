@@ -11,8 +11,10 @@ String response; // response returned to main program
 void setup() {
 	// initialize encoders
 	initEncoders();
+	// initialize buttons
+	initButtons();
 	// initialize serial
-	Serial.begin(115200);
+	Serial.begin(57600);
 	Serial.write(1);
 	robot.performSet(0,0);
 }
@@ -73,23 +75,45 @@ String interpretCommand() {
 	// determine what to do:
 	
 	// check if movement command - make sure length is okay
-	if (command == "CC") {
-		//if (values[0].length() != 4 || values[1].length() != 4)
-		//	return responseString;
-		responseString = "1";
-		returnString += robot.getEncoderValues();
+
+	// check if button command
+	if (command == "B") {
+		if (values[0] == "G") {
+			responseString = "1";
+			returnString += robot.buttons.hasGoBeenPressed();
+		}
+		else if (values[0] == "S") {
+			responseString = "1";
+			returnString += robot.buttons.hasStopBeenPressed();
+		}
 	}
+	// check if sensor command
 	else if (command == "S") {
 		if (values[0] == "E") {
 			responseString = "1";
-			returnString += String(robot.getReadingEMF());
+			returnString += String(robot.sensors.getReadingEMF());
+		}
+	}
+	// check if calibration command
+	else if (command == "C") {
+		if (values[0] == "L") {
+			responseString = "1";
+			returnString += robot.calibrateOnLeft();
+		}
+		else if (values[0] == "R") {
+			responseString = "1";
+			returnString += robot.calibrateOnRight();
+		}
+		else if (values[0] == "B") {
+			responseString = "1";
+			returnString += robot.calibrateOnBack();
 		}
 	}
 	else if (command == "f") {
 		responseString = "1";
 		returnString += robot.performForwardCommand();
 	}
-	else if (command == "fi") {
+	else if (command == "F") {
 		responseString = "1";
 		returnString += robot.performForwardWithIRCommand();
 	}
@@ -109,6 +133,10 @@ String interpretCommand() {
 		responseString = "1";
 		returnString += String(analogRead(FRONT_IR));
 	}
+	else if (command == "~") {
+		responseString = "1";
+		returnString += robot.getEncoderValues();
+	}
 	// protocol commands
 	else if (command == "SYNCOUT") {
 		responseString = "1";
@@ -122,7 +150,7 @@ String interpretCommand() {
 	return responseString;
 }
 
-// initialize interrupt functions
+// initialize encoder interrupt functions
 void initEncoders() {
 	attachInterrupt(digitalPinToInterrupt(LEFT_ENCODER_INTERRUPT),leftEncoderFunc,CHANGE);
 	attachInterrupt(digitalPinToInterrupt(RIGHT_ENCODER_INTERRUPT),rightEncoderFunc,CHANGE);
@@ -134,4 +162,18 @@ void leftEncoderFunc() {
 
 void rightEncoderFunc() {
 	robot.rightEncoderFunc();
+}
+
+// initialize button interrupt functions
+void initButtons() {
+	attachInterrupt(digitalPinToInterrupt(GO_BUTTON_PIN), goButtonFunc, CHANGE);
+	attachInterrupt(digitalPinToInterrupt(STOP_BUTTON_PIN), stopButtonFunc, CHANGE);
+}
+
+void goButtonFunc() {
+	robot.goButtonFunc();
+}
+
+void stopButtonFunc() {
+	robot.stopButtonFunc();
 }

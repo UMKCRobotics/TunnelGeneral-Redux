@@ -17,10 +17,10 @@ class RobotInterface(object):
 
 	# button-related commands
 	def getGoButton(self):
-		return self.arduino.doCommand('B',['G'])
+		return self.arduino.doCommand('B', ['G'])
 
 	def getStopButton(self):
-		return self.arduino.doCommand('B',['S'])
+		return self.arduino.doCommand('B', ['S'])
 
 	# display-related commands
 	def set8x8(self, index, gridType):
@@ -34,7 +34,7 @@ class RobotInterface(object):
 		return self.arduino.doCommand('f')
 	
 	def goForwardWithIR(self):
-		return self.arduino.doCommand('fi')
+		return self.arduino.doCommand('F')
 	
 	def goBackward(self):
 		return self.arduino.doCommand('b')
@@ -46,7 +46,7 @@ class RobotInterface(object):
 		return self.arduino.doCommand('r')
 
 	def goCalibrateIR(self, side):
-		return self.arduino.doCommand('c', [side])
+		return self.arduino.doCommand('C', [side])
 	
 	# sensor-related commands
 	def checkFrontIR(self):

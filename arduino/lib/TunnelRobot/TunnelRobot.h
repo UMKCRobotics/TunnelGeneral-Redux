@@ -3,8 +3,10 @@
 #include "Arduino.h"
 #include "Definitions.h"
 #include "ScrapController.h"
+#include "TunnelButtons.h"
+#include "TunnelSensors.h"
 
-// classes
+// class for main TunnelRobot functions
 class TunnelRobot {
 	private:
 		// encoders
@@ -16,6 +18,8 @@ class TunnelRobot {
 		// dual motor controller
 		ScrapDualController dualControl = ScrapDualController(leftMotor,rightMotor,leftEncoder,rightEncoder);
 	public:
+		TunnelButtons buttons = TunnelButtons();
+		TunnelSensors sensors = TunnelSensors();
 		TunnelRobot();
 		bool performActions();
 		bool performSet(int left, int right); // set encoder goal
@@ -25,10 +29,18 @@ class TunnelRobot {
 		String performBackwardCommand();
 		String performLeftTurnCommand();
 		String performRightTurnCommand();
+		// calibrate functions
+		String calibrateOnLeft();
+		String calibrateOnRight();
+		String calibrateOnBack();
+		// button functions
+		void goButtonFunc();
+		void stopButtonFunc();
+		// display functions
+		void markOnGrid(int index) {};
+		void displayDigit(int digit) {};
 		// IR functions
 		long getAverageIR(int IRpin);
-		// EMF functions
-		long getReadingEMF();
 		// encoder functions
 		String getEncoderValues();
 		void leftEncoderFunc();
