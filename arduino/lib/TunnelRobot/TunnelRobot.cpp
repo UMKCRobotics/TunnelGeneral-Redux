@@ -73,17 +73,54 @@ String TunnelRobot::performRightTurnCommand() {
 	return "1";
 }
 
-// calibrate on sides TODO
 String TunnelRobot::calibrateOnLeft() {
-	return "1";
+	return calibratePivot(LEFT_IR_L, LEFT_IR_R, LEFT_CALIBRATION_DIFF);
 }
 
 String TunnelRobot::calibrateOnRight() {
-	return "1";
+	return calibratePivot(RIGHT_IR_L, RIGHT_IR_R, RIGHT_CALIBRATION_DIFF);
 }
 
 String TunnelRobot::calibrateOnBack() {
-	return "1";
+	return calibratePivot(BACK_IR_L, BACK_IR_R, BACK_CALIBRATION_DIFF);
+	// TODO go to right distance from wall and calibrate again
+}
+
+String TunnelRobot::calibratePivot(int left_ir, int right_ir, int calibration_diff) {
+	int in_bound_count = 0;
+	while (in_bound_count < IS_IN_BOUND_COUNT) {
+		while (!doCalibrationMovement(left_ir,right_ir,calibration_diff)) {
+			in_bound_count = 0;
+			delay(DELAYTIME);
+		}
+		if (doCalibrationMovement(left_ir,right_ir,calibration_diff))
+			in_bound_count += 1;
+		else
+			in_bound_count = 0;
+		delay(DELAYTIME);
+	}
+	dualControl.stop();
+	return String(sensors.getDifferenceIR(left_ir,right_ir));
+}
+
+bool TunnelRobot::doCalibrationMovement(int left_ir, int right_ir, int calibration_diff) {
+	if (sensors.getDifferenceIR(left_ir,right_ir) < (calibration_diff-IR_TOLERANCE)) {
+		dualControl.shiftCount();
+		dualControl.set(1,-1);
+		dualControl.performMovement();
+		return false;
+	}
+	else if (sensors.getDifferenceIR(left_ir,right_ir) > (calibration_diff+IR_TOLERANCE)) {
+		dualControl.shiftCount();
+		dualControl.set(-1,1);
+		dualControl.performMovement();
+		return false;
+	}
+	else {
+		dualControl.shiftCount();
+		dualControl.performMovement();
+		return true;
+	}
 }
 
 

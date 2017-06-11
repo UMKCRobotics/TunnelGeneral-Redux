@@ -30,6 +30,8 @@ class TunnelRobot {
 		String performLeftTurnCommand();
 		String performRightTurnCommand();
 		// calibrate functions
+		bool doCalibrationMovement(int left_ir,int right_ir,int calibration_diff);
+		String calibratePivot(int left_ir, int right_ir, int calibration_diff);
 		String calibrateOnLeft();
 		String calibrateOnRight();
 		String calibrateOnBack();

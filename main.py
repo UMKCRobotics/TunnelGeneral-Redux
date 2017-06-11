@@ -31,6 +31,16 @@ while True:
 		print wait_till_done(robot.checkFrontIR())
 	elif user_inp == 'e':
 		print wait_till_done(robot.getEMFreading())
+	elif user_inp == 'cl':
+		print wait_till_done(robot.goCalibrateIR("L"))
+	elif user_inp == 'cr':
+		print wait_till_done(robot.goCalibrateIR("R"))
+	elif user_inp == 'cb':
+		print wait_till_done(robot.goCalibrateIR("B"))
+	elif user_inp == 'gg':
+		print wait_till_done(robot.getGoButton())
+	elif user_inp == 'gs':
+		print wait_till_done(robot.getStopButton())	
 	time.sleep(0.1)
 
 robot.stop()

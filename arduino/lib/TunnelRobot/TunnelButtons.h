@@ -12,6 +12,8 @@ class TunnelButtons {
 		TunnelButtons() { resetButtons(); };
 		String hasGoBeenPressed() { return (goButtonPressed ? "1" : "0"); };
 		String hasStopBeenPressed() { return (stopButtonPressed ? "1": "0"); };
+		bool hasGoBeenPressedRaw() { return goButtonPressed; };
+		bool hasStopBeenPressedRaw() { return stopButtonPressed; };
 		void resetGoButton() { goButtonPressed = false; };
 		void resetStopButton() { stopButtonPressed = false; };
 		void resetButtons() { resetGoButton(); resetStopButton(); };

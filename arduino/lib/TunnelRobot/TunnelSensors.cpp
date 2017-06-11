@@ -7,7 +7,7 @@ long TunnelSensors::getReadingEMF() {
 	long sum = 0; // sum of squares of samples
 	long average = 0;
 	int reading; // used to store a sample
-	for (int i = 0; i < 500; i++) {
+	for (int i = 0; i < EMF_SAMPLE_COUNT; i++) {
 		reading = analogRead(EMF_PIN);
 		// only care about non-zero readings
 		if (reading != 0) {
@@ -24,10 +24,29 @@ long TunnelSensors::getReadingEMF() {
 
 //get average reading of single IR
 long TunnelSensors::getAverageIR(int IRpin) {
-	int max_count = 10;
 	long sum = 0;
-	for (int i = 0; i < max_count; i++) {
+	for (int i = 0; i < IR_AVERAGE_COUNT; i++) {
 		sum += analogRead(IRpin);
 	}
-	return sum/max_count;
+	return sum/IR_AVERAGE_COUNT;
+}
+
+long TunnelSensors::getAverageIRdual(int IRpinLeft, int IRpinRight) {
+	long sumLeft = 0;
+	long sumRight = 0;
+	for (int i = 0; i < IR_AVERAGE_COUNT; i++) {
+		sumLeft += analogRead(IRpinLeft);
+		sumRight += analogRead(IRpinRight);
+	}
+	return ((sumLeft/IR_AVERAGE_COUNT)+(sumRight/IR_AVERAGE_COUNT))/2;
+}
+
+long TunnelSensors::getDifferenceIR(int IRpinLeft,  int IRpinRight) {
+	long sumLeft = 0;
+	long sumRight = 0;
+	for (int i = 0; i < IR_AVERAGE_COUNT; i++) {
+		sumLeft += analogRead(IRpinLeft);
+		sumRight += analogRead(IRpinRight);
+	}
+	return (sumLeft/IR_AVERAGE_COUNT)-(sumRight/IR_AVERAGE_COUNT);
 }
