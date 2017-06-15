@@ -50,3 +50,16 @@ long TunnelSensors::getDifferenceIR(int IRpinLeft,  int IRpinRight) {
 	}
 	return (sumLeft/IR_AVERAGE_COUNT)-(sumRight/IR_AVERAGE_COUNT);
 }
+
+String TunnelSensors::getObstacleReport() {
+	String report = "";
+	// right side
+	report += ((getAverageIR(RIGHT_IR_L) > OBSTACLE_NEARBY || getAverageIR(RIGHT_IR_R) > OBSTACLE_NEARBY) ? "1" : "0");
+	// front side
+	report += ((getAverageIR(FRONT_IR) > OBSTACLE_NEARBY) ? "1" : "0");
+	// left side
+	report += ((getAverageIR(LEFT_IR_L) > OBSTACLE_NEARBY || getAverageIR(LEFT_IR_R) > OBSTACLE_NEARBY) ? "1" : "0");
+	// back side
+	report += ((getAverageIR(BACK_IR_L) > OBSTACLE_NEARBY || getAverageIR(BACK_IR_R) > OBSTACLE_NEARBY) ? "1" : "0");
+	return report;
+}

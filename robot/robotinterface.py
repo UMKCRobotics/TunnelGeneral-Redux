@@ -11,8 +11,9 @@ sys.path.insert(0, main_dir)
 class RobotInterface(object):
 
 
-	def __init__(self, conf):
+	def __init__(self, conf, map_in):
 		self.conf = conf
+		self.map = map_in
 		self.arduino = ArduinoInterface(conf["ard_port"], int(conf["ard_baud"]), int(conf["MAX_TRIES"]))
 
 	# button-related commands
@@ -28,6 +29,9 @@ class RobotInterface(object):
 		# D = deadend
 		# E = empty
 		return self.arduino.doCommand('D', [gridType,"%2d" % index])
+
+	def setReadyLight(self):
+		return self.arduino.doCommand('D', ['R','00'])
 
 	def set7segment(self, number):
 		return self.arduino.doCommand('N', [str(number)])
@@ -64,3 +68,6 @@ class RobotInterface(object):
 	# not related to robot movement, but config stuff
 	def stop(self):
 		self.arduino.stop()
+
+	def checkIfConnected(self):
+		return self.arduino.connected

@@ -97,6 +97,10 @@ String interpretCommand() {
 			responseString = "1";
 			returnString += String(robot.sensors.getReadingEMF());
 		}
+		else if (values[0] == "O") {
+			responseString = "1";
+			returnString += robot.sensors.getObstacleReport();
+		}
 	}
 	// check if calibration command
 	else if (command == "C") {

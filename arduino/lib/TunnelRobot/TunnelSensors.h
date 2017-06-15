@@ -11,6 +11,7 @@ class TunnelSensors {
 		long getAverageIR(int IRpin);
 		long getAverageIRdual(int IRpinLeft, int IRpinRight);
 		long getDifferenceIR(int IRpinLeft,  int IRpinRight);
+		String getObstacleReport();
 
 };
 

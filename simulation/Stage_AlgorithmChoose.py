@@ -10,9 +10,10 @@ from Stage import Stage
 # algorithms
 import AI_17
 import AI_JED
+import AI_REDUX
 
 class Stage_AlgorithmChoose(Stage):
-    algorithms = [AI_17,AI_JED]
+    algorithms = [AI_17,AI_JED,AI_REDUX]
         
 
     def __init__(self, screen):
@@ -36,6 +37,8 @@ class Stage_AlgorithmChoose(Stage):
         self.cursored = 0
         y += ListButton.height
         self.all_buttons.append(ListButton(screen, x, y, "AI_JED", self.algorithms[1]))
+        y += ListButton.height
+        self.all_buttons.append(ListButton(screen, x, y, "AI_REDUX", self.algorithms[2]))
 
     def move_cursor_to_index(self, index):
         if self.cursored is None:
