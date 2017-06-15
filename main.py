@@ -17,5 +17,5 @@ while not robot.checkIfConnected():
 	time.sleep(0.1)
 
 # start algorithm
-robotAlgorithm = AI_REDUX(robot_impl, robot_impl)
+robotAlgorithm = AI_REDUX(robot, robot)
 robotAlgorithm.doStuff()
