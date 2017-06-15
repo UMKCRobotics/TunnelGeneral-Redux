@@ -61,6 +61,7 @@ class ScrapMotorControl {
 		ScrapMotorControl();
 		ScrapMotorControl(ScrapMotor& mot, ScrapEncoder& enc);
 		void setControl(float newSpeed); // set direction + speed
+		void setControlEnc(int encPerSec) { setControl(convertToSpeed(encPerSec)); };
 		void setSpeed(float newSpeed); // set direction only
 		void setMinSpeed(float newMin) { minSpeed = newMin; };
 		void setMaxSpeed(float newMax) { maxSpeed = newMax; };
@@ -144,9 +145,9 @@ class ScrapDualController {
 		int encTolerance = 5; // max window of error from set goal
 		int slowdownThresh1 = 500; // slow down range
 		int slowdownThresh2 = 500; // slow down range
-		int minSlowPower1 = 90; // minimum power of motor1
-		int minSlowPower2 = 90; // minimum power of motor2
-		int minEncSpeed = 250;
+		int minSlowPower1 = 65; // minimum power of motor1
+		int minSlowPower2 = 65; // minimum power of motor2
+		int minEncSpeed = 200;
 		int maxEncSpeed = 1400;
 		int encSpeedBalance = 10;
 		ScrapMotor* motor1;
@@ -155,12 +156,14 @@ class ScrapDualController {
 		ScrapEncoder* encoder2;
 		ScrapSwitch* switch1;
 		ScrapSwitch* switch2;
-		ScrapMotorControl speedControl1;
-		ScrapMotorControl speedControl2;
 	public:
 		ScrapDualController();
 		ScrapDualController(ScrapMotor& mot1, ScrapMotor& mot2, ScrapEncoder& enc1, ScrapEncoder& enc2);
 		ScrapDualController(ScrapMotor& mot1, ScrapMotor& mot2, ScrapEncoder& enc1, ScrapEncoder& enc2, ScrapSwitch& swi1, ScrapSwitch& swi2);
+		// speed can be externally controlled
+		ScrapMotorControl speedControl1;
+		ScrapMotorControl speedControl2;
+		// other functions and junk
 		bool set(long g1,long g2); //returns state of 'done'
 		bool set(long goal_both); //returns state of 'done'
 		void shiftCount(); //sets encoders to relative value from current goal
@@ -186,6 +189,7 @@ class ScrapDualController {
 		long getCount1() { return encoder1->getCount(); };
 		long getCount2() { return encoder2->getCount(); };
 		long getCount() { return (getCount1()+getCount2())/2; }; //returns average of encoder counts
+		void resetCount() { encoder1->resetCount(); encoder2->resetCount();};
 		void attachMotor1(ScrapMotor& mot);
 		void attachMotor2(ScrapMotor& mot);
 		void attachEncoder1(ScrapEncoder& enc);

@@ -10,8 +10,12 @@ DEFINITIONS BEGIN
 #define MAXVALUES 2
 #define EMF_SAMPLE_COUNT 500
 #define IR_AVERAGE_COUNT 20
-#define IR_TOLERANCE 5
-#define IS_IN_BOUND_COUNT 6
+#define IR_TOLERANCE 6
+#define IS_IN_BOUND_COUNT 5
+
+// define display constants and pins
+#define MATRIX_PIN 6
+#define MATRIX_READY_LIGHT_INDEX 56
 
 // define all encoder pins
 #define LEFT_ENCODER_INTERRUPT 3
@@ -44,13 +48,13 @@ DEFINITIONS BEGIN
 #define EMF_PIN A0
 
 // define encoder distances
-#define FORWARD 2500
+#define FORWARD 2550
 #define TURN 1275
 #define FAR 7000
 
 // define IR distances
 #define CLOSE_TO_WALL 200
-#define OBSTACLE_NEARBY 200 // TODO
+#define OBSTACLE_NEARBY 100 // TODO
 
 // define calibration IR differences
 #define LEFT_CALIBRATION_DIFF 10

@@ -5,6 +5,7 @@
 #include "ScrapController.h"
 #include "TunnelButtons.h"
 #include "TunnelSensors.h"
+#include "TunnelDisplay.h"
 
 // class for main TunnelRobot functions
 class TunnelRobot {
@@ -20,6 +21,7 @@ class TunnelRobot {
 	public:
 		TunnelButtons buttons = TunnelButtons();
 		TunnelSensors sensors = TunnelSensors();
+		TunnelDisplay display = TunnelDisplay();
 		TunnelRobot();
 		bool performActions();
 		bool performSet(int left, int right); // set encoder goal

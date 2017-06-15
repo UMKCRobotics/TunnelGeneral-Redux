@@ -2,7 +2,7 @@
 
 
 TunnelRobot::TunnelRobot() {
-
+	
 }
 
 bool TunnelRobot::performActions() {
@@ -100,25 +100,41 @@ String TunnelRobot::calibratePivot(int left_ir, int right_ir, int calibration_di
 		delay(DELAYTIME);
 	}
 	dualControl.stop();
+	dualControl.set(0,0);
+	dualControl.resetCount();
+	dualControl.performMovement();
 	return String(sensors.getDifferenceIR(left_ir,right_ir));
 }
 
 bool TunnelRobot::doCalibrationMovement(int left_ir, int right_ir, int calibration_diff) {
+	int setSpeedTo = 200;
 	if (sensors.getDifferenceIR(left_ir,right_ir) < (calibration_diff-IR_TOLERANCE)) {
-		dualControl.shiftCount();
-		dualControl.set(1,-1);
-		dualControl.performMovement();
+		//dualControl.shiftCount();
+		//dualControl.set(1,-1);
+		//dualControl.performMovement();
+		dualControl.speedControl1.setControlEnc(setSpeedTo);
+		dualControl.speedControl2.setControlEnc(-setSpeedTo);
+		dualControl.speedControl1.performMovement();
+		dualControl.speedControl2.performMovement();
 		return false;
 	}
 	else if (sensors.getDifferenceIR(left_ir,right_ir) > (calibration_diff+IR_TOLERANCE)) {
-		dualControl.shiftCount();
-		dualControl.set(-1,1);
-		dualControl.performMovement();
+		//dualControl.shiftCount();
+		//dualControl.set(-1,1);
+		//dualControl.performMovement();
+		dualControl.speedControl1.setControlEnc(-setSpeedTo);
+		dualControl.speedControl2.setControlEnc(setSpeedTo);
+		dualControl.speedControl1.performMovement();
+		dualControl.speedControl2.performMovement();
 		return false;
 	}
 	else {
-		dualControl.shiftCount();
-		dualControl.performMovement();
+		//dualControl.shiftCount();
+		//dualControl.performMovement();
+		dualControl.speedControl1.setControlEnc(0);
+		dualControl.speedControl2.setControlEnc(0);
+		dualControl.speedControl1.performMovement();
+		dualControl.speedControl2.performMovement();
 		return true;
 	}
 }

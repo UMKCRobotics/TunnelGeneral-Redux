@@ -17,6 +17,9 @@ void setup() {
 	Serial.begin(57600);
 	Serial.write(1);
 	robot.performSet(0,0);
+	// initialize display
+	robot.display.init();
+	//robot.display.turnOnReadyLight();
 }
 
 void loop () {
@@ -59,6 +62,7 @@ void loop () {
 		Serial.println(response); //sends response with \n at the end
 		// empty out command and value strings
 		command = "";
+		response = "";
 		for (int i = 0; i < MAXVALUES; i++) {
 			values[i] = "";
 		}
@@ -109,6 +113,27 @@ String interpretCommand() {
 			returnString += robot.calibrateOnBack();
 		}
 	}
+	// check if 8x8 command
+	else if (command == "D") {
+		if (values[0] == "R") {
+			responseString = "1";
+			robot.display.turnOnReadyLight();
+		}
+		else if (values[1].length() == 2) {
+			if (values[0] == "T") {
+				responseString = "1";
+				robot.display.setToTunnel(values[1].toInt());
+			}
+			else if (values[0] == "D") {
+				responseString = "1";
+				robot.display.setToDeadend(values[1].toInt());
+			}
+			else if (values[0] == "E") {
+				responseString = "1";
+				robot.display.setToEmpty(values[1].toInt());
+			}
+		}
+	}	
 	else if (command == "f") {
 		responseString = "1";
 		returnString += robot.performForwardCommand();

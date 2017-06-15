@@ -35,10 +35,11 @@ class SerialComm(DeviceComm):
         self.performCommand = newFunc
 
     def initializeConnection(self):
-        # wait until serial is connected
-        if self.serial.isOpen():
-            self.serial.close()
-        self.serial.open()
+        # wait until serial is connected, close it and open it again
+        for i in range(0,2):
+		    if self.serial.isOpen():
+		        self.serial.close()
+		    self.serial.open()
         while not self.connected:
             time.sleep(0.1)
             self.serial.timeout = 1  # make serial non blocking
@@ -53,6 +54,10 @@ class SerialComm(DeviceComm):
         tries = 0
         response = None
         while tries < self.maxTries:
+            # flush serial
+            self.serial.flushInput()
+            self.serial.flushOutput()
+            # write request
             self.serial.write(commReq.request + '\n')
             # wait for a response to change state of command Request
             serin = ""
@@ -60,6 +65,7 @@ class SerialComm(DeviceComm):
                 serin += self.serial.read()
             
             #print("got from serial read: %s" % serin)
+            print "RCVD: {}, tries: {}".format(serin,tries)
             if serin[0] == 'n':
                 response = 'BAD'
                 time.sleep(0.1)

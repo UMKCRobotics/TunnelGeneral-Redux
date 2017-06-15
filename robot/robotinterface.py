@@ -23,8 +23,11 @@ class RobotInterface(object):
 		return self.arduino.doCommand('B', ['S'])
 
 	# display-related commands
-	def set8x8(self, index, gridType):
-		return self.arduino.doCommand(gridType, [str(index)])
+	def set8x8(self, index=0, gridType="E"):
+		# T = objective tunnel
+		# D = deadend
+		# E = empty
+		return self.arduino.doCommand('D', [gridType,"%2d" % index])
 
 	def set7segment(self, number):
 		return self.arduino.doCommand('N', [str(number)])
